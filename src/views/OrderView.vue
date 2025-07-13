@@ -1,6 +1,6 @@
 <script>
 import OrderTable from '../components/Orders/OrderTable.vue';
-
+import { fetchOrders } from '../services/OrderService.js'; // Assuming you have an API function to fetch orders
 export default {
   name: 'OrderView',
   components: {
@@ -8,11 +8,21 @@ export default {
   },
   data() {
     return {
-      orders: [
-        { id: 1, customer: 'John Doe', item: 'Widget A', price: '$10.00', status: 'pending' },
-        { id: 2, customer: 'Jane Smith', item: 'Widget B', price: '$20.00', status: 'paid' },
-      ],
+      orders: [],
     };
+  },
+  methods: {
+    async loadOrders() {
+      try {
+        const response = await fetchOrders();
+        this.orders = response?.data?.data || [];
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    }
+  },
+  mounted() {
+    this.loadOrders();
   },
 };
 </script>

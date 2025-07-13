@@ -11,16 +11,31 @@ export default {
   data() {
     return {
       orders: [],
+      meta: {
+        current_page: 1,
+        last_page: 1,
+        total: 0,
+        per_page: 10
+      }
     };
   },
   methods: {
-    async loadOrders() {
+    async loadOrders(page = 1) {
       try {
-        const response = await fetchOrders();
+        const response = await fetchOrders({ page });
         this.orders = response?.data?.data || [];
+        this.meta = response?.data?.meta || {
+          current_page: 1,
+          last_page: 1,
+          total: 0,
+          per_page: 10
+        };
       } catch (error) {
         console.error('Error fetching orders:', error);
       }
+    },
+    handlePageChange(page) {
+      this.loadOrders(page);
     }
   },
   mounted() {
@@ -37,6 +52,19 @@ export default {
         <OrderForm @order-submitted="loadOrders" />
         <div class="mb-6">
           <OrderTable :orders="orders" @status-updated="loadOrders" />
+          <div class="mt-4 flex justify-between items-center">
+            <span class="text-sm text-gray-600">Showing {{ meta.per_page }} of {{ meta.total }} orders</span>
+            <nav>
+              <ul class="flex space-x-2">
+                <li v-for="page in meta.last_page" :key="page">
+                  <button @click="handlePageChange(page)"
+                    :class="['px-3 py-1 rounded', page === meta.current_page ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700']">
+                    {{ page }}
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
     </section>

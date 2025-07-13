@@ -4,8 +4,8 @@ const api = axios.create({
   baseURL: 'http://localhost:8000/api/orders/',
 })
 
-export function fetchOrders() {
-  return api.get('/')
+export function fetchOrders(params = {}) {
+  return api.get('/', { params })
 }
 
 export function createOrder(orderData) {

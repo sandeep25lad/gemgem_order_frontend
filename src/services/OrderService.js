@@ -12,6 +12,9 @@ export function createOrder(orderData) {
   return api.post('/', orderData)
 }
 
-export function updateOrderStatus(orderId, status) {
-  return api.patch(`/${orderId}/`, { status })
+export function updateOrderStatus(order) {
+  const payload = {
+    status: order?.status,
+  }
+  return api.patch(`/${order?.id}`, payload)
 }

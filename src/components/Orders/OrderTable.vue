@@ -1,14 +1,20 @@
 <script>
+import { updateOrderStatus } from '../../services/OrderService.js';
 export default {
   name: 'OrderTable',
   props: {
     orders: Array,
   },
   methods: {
-    updateStatus(order) {
-      // Logic to update the order status
-      console.log(`Updating status for order ${order.id} to ${order.status}`);
-    },
+    async updateStatus(order) {
+      try {
+        await updateOrderStatus(order);
+        this.$emit('status-updated', order);
+      } catch (err) {
+        alert('Error updating order status');
+        console.error('Error updating order status:', err);
+      }
+    }
   },
 };
 </script>

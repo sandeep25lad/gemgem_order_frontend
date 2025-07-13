@@ -1,10 +1,12 @@
 <script>
+import OrderForm from '../components/Orders/OrderForm.vue';
 import OrderTable from '../components/Orders/OrderTable.vue';
 import { fetchOrders } from '../services/OrderService.js'; // Assuming you have an API function to fetch orders
 export default {
   name: 'OrderView',
   components: {
-    OrderTable,
+    OrderForm,
+    OrderTable
   },
   data() {
     return {
@@ -32,7 +34,10 @@ export default {
     <section class="min-h-screen bg-gray-50 p-6">
       <div class="max-w-5xl mx-auto">
         <h1 class="text-3xl font-bold mb-4">Orders</h1>
-        <OrderTable :orders="orders" @status-updated="loadOrders" />
+        <OrderForm @order-submitted="loadOrders" />
+        <div class="mb-6">
+          <OrderTable :orders="orders" @status-updated="loadOrders" />
+        </div>
       </div>
     </section>
   </main>

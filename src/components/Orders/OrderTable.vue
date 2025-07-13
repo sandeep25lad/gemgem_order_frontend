@@ -35,13 +35,18 @@ export default {
         <td class="p-2">{{ order.customer_name }}</td>
         <td class="p-2">{{ order.item_name }}</td>
         <td class="p-2">${{ order.price }}</td>
-        <td class="p-2 capitalize">{{ order.status }}</td>
-        <td class="p-2">
+        <td class="p-2 capitalize" :class="[order.status === 'paid' ? 'text-green-600' : 'text-red-700']">{{
+          order.status }}</td>
+        <td class="p-2" v-if="order.status !== 'paid' && order.status !== 'cancelled'">
           <select v-model="order.status" @change="updateStatus(order)" class="border rounded px-2 py-1 capitalize">
             <option value="pending">Pending</option>
             <option value="paid">Paid</option>
             <option value="cancelled">Cancelled</option>
           </select>
+        </td>
+        <td class="p-2 capitalize" v-else>
+          <span :class="[order.status === 'paid' ? 'text-green-600' : 'text-red-700']">{{
+            order.status }}</span>
         </td>
       </tr>
     </tbody>
